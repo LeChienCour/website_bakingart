@@ -1,47 +1,31 @@
-// SSG — no fetch, no revalidate. This page is statically generated at build time.
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { SectionWrapper } from "@/components/layout/section-wrapper";
+import { Heading } from "@/components/typography/heading";
+import { Text } from "@/components/typography/text";
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-8 p-8">
-      <div className="text-center">
-        <h1
-          className="text-5xl font-bold"
-          style={{ fontFamily: "var(--font-family-heading)" }}
-        >
-          BakingArt GDL
-        </h1>
-        <p className="mt-3 text-lg" style={{ color: "var(--color-gris-secondary)" }}>
-          Repostería artesanal en Guadalajara
-        </p>
-      </div>
+    <main>
+      <SectionWrapper background="crema" className="min-h-screen flex items-center">
+        <div className="text-center max-w-2xl mx-auto space-y-6">
+          <Heading as="h1" size="display">BakingArt GDL</Heading>
+          <Text variant="body" muted>Repostería artesanal en Guadalajara</Text>
 
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle>Bienvenido</CardTitle>
-          <CardDescription>
-            Pasteles, cupcakes y delicias hechas con amor.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button
-            className="w-full"
-            style={{
-              backgroundColor: "var(--color-rosa)",
-              color: "var(--color-gris-text)",
-            }}
-          >
-            Ver catálogo
-          </Button>
-        </CardContent>
-      </Card>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <Badge variant="new">Nuevo</Badge>
+            <Badge variant="popular">Popular</Badge>
+            <Badge variant="temporada">Temporada</Badge>
+            <Badge variant="agotado">Agotado</Badge>
+          </div>
+
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Button variant="brand-primary" size="brand-lg">Cotizar por WhatsApp</Button>
+            <Button variant="brand-secondary" size="brand-lg">Ver catálogo</Button>
+            <Button variant="brand-outline" size="brand-lg">Nuestros cursos</Button>
+          </div>
+        </div>
+      </SectionWrapper>
     </main>
   );
 }

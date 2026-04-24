@@ -1,27 +1,46 @@
 @import "tailwindcss";
 
 /*
-  Font faces are loaded via next/font/google in layout.tsx.
-  CSS variables --font-playfair and --font-inter are injected
-  on <html> by the RootLayout component.
+  Font faces loaded via next/font/google in layout.tsx.
+  CSS variables --font-playfair and --font-inter injected on <html>.
 */
 
 @theme {
-  /* Brand colors */
-  --color-rosa: #F4B6C2;
-  --color-turquesa: #4DD0E1;
-  --color-crema: #FFF8F0;
-  --color-gris-text: #2D2D2D;
-  --color-gris-secondary: #6B7280;
+  /* ── Colores de marca ── */
+  --color-rosa:            #F4B6C2;
+  --color-rosa-dark:       #E8929F;
+  --color-turquesa:        #4DD0E1;
+  --color-turquesa-dark:   #26C6DA;
+  --color-crema:           #FFF8F0;
+  --color-crema-dark:      #F5EDE0;
+  --color-gris-text:       #2D2D2D;
+  --color-gris-secondary:  #6B7280;
+  --color-gris-light:      #E5E7EB;
 
-  /* Font families — variables come from next/font injected on <html> */
-  --font-family-heading: var(--font-playfair), "Playfair Display", Georgia, serif;
-  --font-family-body: var(--font-inter), Inter, system-ui, sans-serif;
+  /* ── Escala tipográfica ── */
+  --text-display: 3rem;       /* 48px — hero headings */
+  --text-h1:      2.25rem;    /* 36px — section headings */
+  --text-h2:      1.75rem;    /* 28px — sub-sections */
+  --text-body:    1rem;       /* 16px — párrafos */
+  --text-small:   0.875rem;   /* 14px — labels, notas */
+
+  /* ── Fuentes ── */
+  --font-heading: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-body:    var(--font-inter), Inter, system-ui, sans-serif;
 }
 
-/* Base styles */
-html {
-  color: var(--color-gris-text);
+/* Base */
+body {
   background-color: var(--color-crema);
-  font-family: var(--font-family-body);
+  color: var(--color-gris-text);
+  font-family: var(--font-body);
+}
+
+/* Focus visible accesible — no outline para mouse, visible para teclado */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--color-turquesa);
+  outline-offset: 2px;
 }
