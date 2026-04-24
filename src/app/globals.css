@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/*
+  Font faces are loaded via next/font/google in layout.tsx.
+  CSS variables --font-playfair and --font-inter are injected
+  on <html> by the RootLayout component.
+*/
+
+@theme {
+  /* Brand colors */
+  --color-rosa: #F4B6C2;
+  --color-turquesa: #4DD0E1;
+  --color-crema: #FFF8F0;
+  --color-gris-text: #2D2D2D;
+  --color-gris-secondary: #6B7280;
+
+  /* Font families — variables come from next/font injected on <html> */
+  --font-family-heading: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-family-body: var(--font-inter), Inter, system-ui, sans-serif;
+}
+
+/* Base styles */
+html {
+  color: var(--color-gris-text);
+  background-color: var(--color-crema);
+  font-family: var(--font-family-body);
+}

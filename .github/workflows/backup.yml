@@ -1,0 +1,44 @@
+name: Sanity Dataset Backup
+
+on:
+  schedule:
+    # Runs every day at 03:00 UTC
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Export Sanity dataset
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Export dataset
+        run: |
+          npx sanity dataset export \
+            ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }} \
+            backup-${{ steps.date.outputs.date }}.tar.gz \
+            --project ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }} \
+            --token ${{ secrets.SANITY_API_READ_TOKEN }}
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sanity-backup-${{ steps.date.outputs.date }}
+          path: backup-${{ steps.date.outputs.date }}.tar.gz
+          retention-days: 30
