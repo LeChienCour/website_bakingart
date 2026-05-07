@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   description: "Repostería artesanal en Guadalajara. Pasteles personalizados y cursos de repostería.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://bakingart-gdl.vercel.app"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://bakingart-gdl.vercel.app"
   ),
 };
 

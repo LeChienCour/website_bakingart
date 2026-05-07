@@ -1,6 +1,5 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
-import { visionTool } from "@sanity/vision";
 import { schemas } from "./studio/schemas";
 
 export default defineConfig({
@@ -10,7 +9,25 @@ export default defineConfig({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title("Contenido")
+          .items([
+            // Singleton — Karenina can only create one siteConfig
+            S.listItem()
+              .title("Configuración del sitio")
+              .child(
+                S.document()
+                  .schemaType("siteConfig")
+                  .documentId("siteConfig")
+              ),
+            S.divider(),
+            S.documentTypeListItem("pastel").title("Pasteles"),
+          ]),
+    }),
+  ],
 
   schema: {
     types: schemas,
