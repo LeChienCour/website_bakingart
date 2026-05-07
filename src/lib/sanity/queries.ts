@@ -52,26 +52,53 @@ export const siteConfigQuery = `*[_type == "siteConfig"][0]{ title, description,
 
 // ── Fetchers ───────────────────────────────────────────────────────────────
 
+function isSanityConfigured(): boolean {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID &&
+    process.env.NEXT_PUBLIC_SANITY_DATASET
+  );
+}
+
 export async function getPasteles(): Promise<Pastel[]> {
-  return client.fetch<Pastel[]>(pastelesQuery, {}, { next: { tags: ["pastel"] } });
+  if (!isSanityConfigured()) return [];
+  try {
+    return await client.fetch<Pastel[]>(pastelesQuery, {}, { next: { tags: ["pastel"] } });
+  } catch {
+    return [];
+  }
 }
 
 export async function getPastelesDestacados(): Promise<Pastel[]> {
-  return client.fetch<Pastel[]>(pastelesDestacadosQuery, {}, { next: { tags: ["pastel"] } });
+  if (!isSanityConfigured()) return [];
+  try {
+    return await client.fetch<Pastel[]>(pastelesDestacadosQuery, {}, { next: { tags: ["pastel"] } });
+  } catch {
+    return [];
+  }
 }
 
 export async function getPastelBySlug(slug: string): Promise<Pastel | null> {
-  return client.fetch<Pastel | null>(
-    pastelBySlugQuery,
-    { slug },
-    { next: { tags: ["pastel", `pastel:${slug}`] } }
-  );
+  if (!isSanityConfigured()) return null;
+  try {
+    return await client.fetch<Pastel | null>(
+      pastelBySlugQuery,
+      { slug },
+      { next: { tags: ["pastel", `pastel:${slug}`] } }
+    );
+  } catch {
+    return null;
+  }
 }
 
 export async function getSiteConfig(): Promise<SiteConfig | null> {
-  return client.fetch<SiteConfig | null>(
-    siteConfigQuery,
-    {},
-    { next: { tags: ["siteConfig"] } }
-  );
+  if (!isSanityConfigured()) return null;
+  try {
+    return await client.fetch<SiteConfig | null>(
+      siteConfigQuery,
+      {},
+      { next: { tags: ["siteConfig"] } }
+    );
+  } catch {
+    return null;
+  }
 }
