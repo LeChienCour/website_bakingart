@@ -1,23 +1,77 @@
-/**
- * Sanity GROQ queries.
- *
- * Pattern:
- *   1. Define a query string with `defineQuery` (or plain string) from sanity.
- *   2. Export a typed fetcher function that calls `client.fetch(query, params, { next: { tags: [...] } })`.
- *   3. Use the matching tag in the /api/revalidate webhook handler to invalidate on publish.
- *
- * Example:
- *   export const siteConfigQuery = `*[_type == "siteConfig"][0]{ title, description }`;
- *
- *   export async function getSiteConfig() {
- *     return client.fetch<SiteConfig>(
- *       siteConfigQuery,
- *       {},
- *       { next: { tags: ["siteConfig"] } }
- *     );
- *   }
- *
- * Schemas and their tags will be added as features are built.
- */
+import { client } from "./client";
 
-export const siteConfigQuery = `*[_type == "siteConfig"][0]{ title, description }`;
+// ── Types ──────────────────────────────────────────────────────────────────
+
+export type SanityImage = {
+  asset: { _ref: string; _type: "reference" };
+  alt: string;
+  hotspot?: { x: number; y: number };
+};
+
+export type Pastel = {
+  _id: string;
+  nombre: string;
+  slug: string;
+  descripcion: string;
+  imagen: SanityImage;
+  categoria: "boda" | "xv" | "cumpleanos" | "babyShower" | "corporativo" | "tematico";
+  porciones?: string;
+  tag?: "popular" | "new" | "temporada";
+  destacado: boolean;
+  orden: number;
+};
+
+export type SiteConfig = {
+  title: string;
+  description?: string;
+  whatsappNumber: string;
+  instagramUrl?: string;
+  direccion?: string;
+  email?: string;
+};
+
+// ── Queries ────────────────────────────────────────────────────────────────
+
+const pastelProjection = `
+  _id,
+  nombre,
+  "slug": slug.current,
+  descripcion,
+  imagen{ asset, alt, hotspot },
+  categoria,
+  porciones,
+  tag,
+  destacado,
+  orden
+`;
+
+export const pastelesQuery = `*[_type == "pastel"] | order(orden asc, nombre asc){${pastelProjection}}`;
+export const pastelesDestacadosQuery = `*[_type == "pastel" && destacado == true] | order(orden asc){${pastelProjection}}`;
+export const pastelBySlugQuery = `*[_type == "pastel" && slug.current == $slug][0]{${pastelProjection}}`;
+export const siteConfigQuery = `*[_type == "siteConfig"][0]{ title, description, whatsappNumber, instagramUrl, direccion, email }`;
+
+// ── Fetchers ───────────────────────────────────────────────────────────────
+
+export async function getPasteles(): Promise<Pastel[]> {
+  return client.fetch<Pastel[]>(pastelesQuery, {}, { next: { tags: ["pastel"] } });
+}
+
+export async function getPastelesDestacados(): Promise<Pastel[]> {
+  return client.fetch<Pastel[]>(pastelesDestacadosQuery, {}, { next: { tags: ["pastel"] } });
+}
+
+export async function getPastelBySlug(slug: string): Promise<Pastel | null> {
+  return client.fetch<Pastel | null>(
+    pastelBySlugQuery,
+    { slug },
+    { next: { tags: ["pastel", `pastel:${slug}`] } }
+  );
+}
+
+export async function getSiteConfig(): Promise<SiteConfig | null> {
+  return client.fetch<SiteConfig | null>(
+    siteConfigQuery,
+    {},
+    { next: { tags: ["siteConfig"] } }
+  );
+}
