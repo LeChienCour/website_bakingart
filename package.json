@@ -15,11 +15,11 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "0.511.0",
-    "next": "^16.2.5",
-    "next-sanity": "^12.4.5",
-    "react": "19.2",
-    "react-dom": "19.2",
-    "sanity": "^3.99.0",
+    "next": "15.5.16",
+    "next-sanity": "9.8.21",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "sanity": "3.88.0",
     "tailwind-merge": "2.6.0"
   },
   "devDependencies": {
@@ -28,7 +28,7 @@
     "@types/react": "19.1.3",
     "@types/react-dom": "19.1.3",
     "eslint": "^9.39.4",
-    "eslint-config-next": "15.3.1",
+    "eslint-config-next": "15.5.16",
     "postcss": "8.5.3",
     "tailwindcss": "4.1.5",
     "typescript": "5.8.3"
