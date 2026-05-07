@@ -24,7 +24,7 @@ const FALLBACK_PASTELES = [
   { nombre: "Pastel Temático", desc: "Personajes, películas, series — lo que quieras.", tag: "popular" as const, emoji: "🎨", porciones: "10–40" },
 ];
 
-function PastelCard({ pastel, waHref }: { pastel: Pastel; waHref: string }) {
+function PastelCard({ pastel }: { pastel: Pastel }) {
   const waMsg = `Hola! Me gustaría cotizar: ${pastel.nombre}. ¿Pueden ayudarme?`;
   const cardWaHref = getWhatsAppHref(waMsg);
 
@@ -124,7 +124,7 @@ export default async function PastelesPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {hasSanityData
             ? pasteles.map((p) => (
-                <PastelCard key={p._id} pastel={p} waHref={waHref} />
+                <PastelCard key={p._id} pastel={p} />
               ))
             : FALLBACK_PASTELES.map((p) => (
                 <FallbackCard key={p.nombre} p={p} waHref={waHref} />
