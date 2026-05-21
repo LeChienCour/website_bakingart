@@ -9,6 +9,7 @@ on:
 jobs:
   backup:
     name: Export Sanity dataset
+    if: false # disabled until content exists in Sanity
     runs-on: ubuntu-latest
 
     steps:
